@@ -1,7 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
-
-from attr import field
 
 
 @dataclass
