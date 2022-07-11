@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-
+from select import select
 
 @dataclass
 class Property:
@@ -13,3 +13,8 @@ class Property:
             raise ValueError('Invalid price')
         if self.rental < 0.1:
             raise ValueError('Invalid rental')
+
+    def purchase(self, owner_name: str) -> bool:
+        if len(owner_name) > 0:
+            self.owner = owner_name
+            self.status = "purchased"

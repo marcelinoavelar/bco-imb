@@ -6,11 +6,15 @@ from src.domain.entities.property import Property
 
 @dataclass
 class Player:
+    name: str
     balance: float
 
     def __post_init__(self):
         if self.balance < 0.1:
             raise ValueError('Invalid balance')
+
+    def purchase(self, property_price: float) -> bool:
+        self.balance -= self.balance - property_price
 
 
 class PlayerInpulsive(Player):
@@ -45,8 +49,7 @@ class PlayerCautious(Player):
             raise ValueError('Invalid profile')
 
     def evaluate_purchase(self, property: Property) -> bool:
-        balance =  self.balance - property.price
-        print(f'\n {balance}  \n')
+        balance = self.balance - property.price
         if balance >= 80:
             return True
         return False
@@ -59,9 +62,9 @@ class PlayerRandom(Player):
         if len(self.profile) < 1:
             raise ValueError('Invalid profile')
 
-    
     def evaluate_purchase(self, property: Property) -> bool:
-        if (round(random.uniform(1, 2))%2) == 0:
-            return True
-        else:
-            False
+        value = round(random.uniform(1, 2))
+        if value == 1:
+            return False
+
+        return True
