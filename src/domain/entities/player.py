@@ -16,6 +16,11 @@ class Player:
     def purchase(self, property_price: float) -> bool:
         self.balance -= property_price
 
+    def pay_rental(self, property: Property) -> None:
+        self.balance -= property.rental
+    
+    def add_balance(self, value: float) -> None:
+        self.balance += value
 
 class PlayerInpulsive(Player):
     profile: str = "impulsive"

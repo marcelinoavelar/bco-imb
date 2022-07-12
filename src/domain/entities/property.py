@@ -18,3 +18,7 @@ class Property:
         if len(owner_name) > 0:
             self.owner = owner_name
             self.status = "purchased"
+    
+    def free(self):
+        self.owner = None
+        self.status = "available"

@@ -10,34 +10,35 @@ class GameRound:
         self.properties = properties
         self.players = players
 
-    def execute(self) -> bool:
+    def execute(self, rounds: int) -> bool:
 
-        # Init positons
-        player_positons = dict({})        
+        player_positons = dict({})
         for player in self.players:
             player_positons[player.name] = 0
-        
-        for i in range(50):
-            print(f'\n $Jogadores atuais ->  {len(self.players)} \n')
+
+        for i in range(rounds):
             for player in self.players:
+                plus_balance = False
                 progess = round(random.uniform(1, 6))
-                print(f'\n -> {player.name} tem saldo de : {player.balance} \n')
-                print(f'\n -> {player.name} jogou o dado : {progess} \n')
-                print(f'\n -> {player.name} estava em  : {player_positons[player.name]} \n')
                 player_positons[player.name] += progess
-                print(f'\n -> {player.name} vai para : {player_positons[player.name]} \n')
                 if player_positons[player.name]+progess >= len(self.properties):
                     progess = progess-len(self.properties)
+                    plus_balance = True
                 property = self.properties[progess-1:progess][0]
-                print(f'\n -> {player.name} vai tentar comprar propriede de  : R$ {property.price} \n')
                 purchase_property_service = PurchasePropertyService()
                 output = purchase_property_service.purchase(property, player)
-                print(f'\n -> jogador {player.name} comprou a propriedade {player_positons[player.name]} : {output} \n')
                 if not output:
                     if property.owner != None:
-                        player.balance -= property.rental
-                        print(f'\n -> pagou aluguél de : {property.rental} \n')
-                print(f'\n {player} \n')
-                print(f'\n -> {player.name} ficou com saldo de : {round(player.balance,2)} \n')
-                print(f'@@@@@')
-            print(f'#####')
+                        player.pay_rental(property)
+                if player.balance < 0:
+                    property.free()
+                    self.players.remove(player)
+                else:
+                    if plus_balance:
+                        player.add_balance(100)
+
+            if len(self.players) == 1:
+                break
+
+
+        print(f'\n Winer -> {self.players} \n')
