@@ -7,14 +7,14 @@ from src.domain.entities.property import Property
 @dataclass
 class Player:
     name: str
-    balance: float
+    balance: float = 300.00
 
     def __post_init__(self):
         if self.balance < 0.1:
             raise ValueError('Invalid balance')
 
     def purchase(self, property_price: float) -> bool:
-        self.balance -= self.balance - property_price
+        self.balance -= property_price
 
 
 class PlayerInpulsive(Player):
