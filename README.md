@@ -64,5 +64,4 @@ python main.py --simulations 300 --rounds 1000 --min_price 250_000.00 --max_pric
   },
   "top winner": "PlayerRandom"
 }
-(.
 ```
